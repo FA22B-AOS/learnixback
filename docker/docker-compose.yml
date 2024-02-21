@@ -17,7 +17,6 @@ services:
       KC_DB_SCHEMA: public
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KEYCLOAK_IMPORT: /opt/keycloak/imports/master-realm.json
     ports:
       - "8080:8080"
     depends_on:
