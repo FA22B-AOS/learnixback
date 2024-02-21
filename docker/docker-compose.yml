@@ -3,7 +3,11 @@ version: "3"
 services:
   keycloak_learnix:
     image: quay.io/keycloak/keycloak:23.0
-    command: start-dev
+    volumes:
+      - ./imports:/opt/keycloak/imports
+    command:
+      - start-dev
+      - --import-realm
     environment:
       KC_DB: postgres
       KC_DB_URL_HOST: postgres_svr
@@ -13,14 +17,12 @@ services:
       KC_DB_SCHEMA: public
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_IMPORT: /opt/keycloak/imports/master-realm.json
     ports:
       - "8080:8080"
     depends_on:
       postgres_svr:
         condition: service_healthy
-    networks:
-      network_sso:
-        ipv4_address: "10.0.0.2"
 
   postgres_svr:
     image: postgres:14.2
@@ -33,12 +35,3 @@ services:
       test: "exit 0"
     ports:
       - "5432:5432"
-    networks:
-      network_sso:
-        ipv4_address: "10.0.0.3"
-networks:
-  network_sso:
-    ipam:
-      driver: default
-      config:
-        - subnet: "10.0.0.0/24"    
