@@ -12,7 +12,6 @@ public class QuizQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long quizQuestionId;
-    private int type;
     private String question;
     private String content;
     private String answer;
