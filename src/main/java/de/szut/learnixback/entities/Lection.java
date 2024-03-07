@@ -8,12 +8,9 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-public class Quiz {
+public class Lection {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long quizId;
-
-    @ManyToOne
-    @JoinColumn(name = "chapterId")
-    private Chapter chapter;
-}
+    private Long lectionId;
+    private String creatorGuid;}

@@ -11,10 +11,8 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-public class Lections {
-
+public class Chapter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String creatorGuid;
+    private Long chapterId;
 }

@@ -11,13 +11,13 @@ import lombok.Setter;
 public class QuizQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String type;
+    private Long quizQuestionId;
+    private int type;
     private String question;
     private String content;
     private String answer;
 
     @ManyToOne
-    @JoinColumn(name = "quiz_id")
+    @JoinColumn(name = "quizId")
     private Quiz quiz;
 }

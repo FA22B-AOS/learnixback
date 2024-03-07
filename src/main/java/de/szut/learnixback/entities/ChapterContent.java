@@ -2,23 +2,21 @@ package de.szut.learnixback.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Entity
 @Getter @Setter
-@NoArgsConstructor
-public class LectureContent {
+public class ChapterContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long chapterContentId;
+
     private String title;
-    private String content;
+    private String contnent;
     private int contentOrder;
-    private String type;
+    private int contentType;
 
     @ManyToOne
-    @JoinColumn(name = "lection_id")
-    private Lections lections;
+    @JoinColumn(name = "chapterId")
+    private Chapter chapter;
 }
