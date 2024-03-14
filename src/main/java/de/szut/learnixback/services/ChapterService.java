@@ -5,6 +5,7 @@ import de.szut.learnixback.repositories.ChapterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,12 @@ public class ChapterService {
 
     public Optional<Chapter> getChapterById(Long id) {
         return chapterRepository.findById(id);
+    }
+
+    public List<Chapter> getAllChaptersByLectionId(Long id){
+        List<Chapter> chatpers = chapterRepository.findAll();
+        chatpers.removeIf(chapter -> !Objects.equals(chapter.getLection(), id));
+        return chatpers;
     }
 
     public Chapter createChapter(Chapter chapter) {

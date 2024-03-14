@@ -13,4 +13,6 @@ public class Lection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long lectionId;
+    private String title;
+    private String description;
     private String creatorGuid;}

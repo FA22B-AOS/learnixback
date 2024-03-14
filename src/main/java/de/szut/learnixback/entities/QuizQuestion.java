@@ -16,7 +16,6 @@ public class QuizQuestion {
     private String content;
     private String answer;
 
-    @ManyToOne
-    @JoinColumn(name = "quizId")
-    private Quiz quiz;
+    @Column(name = "quiz_Id")
+    private Long quizId;
 }

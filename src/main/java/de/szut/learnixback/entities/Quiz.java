@@ -13,7 +13,6 @@ public class Quiz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long quizId;
 
-    @ManyToOne
-    @JoinColumn(name = "chapterId")
-    private Chapter chapter;
+    @Column(name = "chapter_Id")
+    private Long chapterId;
 }

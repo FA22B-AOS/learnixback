@@ -29,6 +29,12 @@ public class ChapterController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/byLection/{id}")
+    public ResponseEntity<List<Chapter>> getAllByLectureId(@PathVariable Long id){
+        List<Chapter> chapters = chapterService.getAllChaptersByLectionId(id);
+        return new ResponseEntity<>(chapters, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Chapter> createChapter(@RequestBody Chapter chapter) {
         Chapter createdChapter = chapterService.createChapter(chapter);

@@ -16,7 +16,6 @@ public class ChapterContent {
     private int contentOrder;
     private int contentType;
 
-    @ManyToOne
-    @JoinColumn(name = "chapterId")
-    private Chapter chapter;
+    @Column(name = "chapter_Id")
+    private Long chapterId;
 }
