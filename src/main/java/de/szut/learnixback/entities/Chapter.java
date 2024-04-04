@@ -9,11 +9,17 @@ import lombok.Setter;
 @Getter @Setter
 @NoArgsConstructor
 public class Chapter {
+
+    public Chapter(String chapterName, Long lectionId){
+        this.chapterName = chapterName;
+        this.lectionId = lectionId;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chapterId;
     private String chapterName;
 
     @Column(name = "lection_Id")
-    private Long lection;
+    private Long lectionId;
 }

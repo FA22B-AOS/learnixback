@@ -22,6 +22,12 @@ public class ChapterContentController {
         return new ResponseEntity<>(chapterContents, HttpStatus.OK);
     }
 
+    @GetMapping("/byChapter/{id}")
+    public ResponseEntity<List<ChapterContent>> getAllChapterContents(@PathVariable Long id) {
+        List<ChapterContent> chapterContents = chapterContentService.getAllChapterContentsFromChapter(id);
+        return new ResponseEntity<>(chapterContents, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ChapterContent> getChapterContentById(@PathVariable Long id) {
         Optional<ChapterContent> chapterContent = chapterContentService.getChapterContentById(id);

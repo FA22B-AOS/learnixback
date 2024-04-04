@@ -15,4 +15,6 @@ public class Lection {
     private Long lectionId;
     private String title;
     private String description;
-    private String creatorGuid;}
+    private String creatorGuid;
+    private String topicType;
+}

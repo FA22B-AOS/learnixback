@@ -24,7 +24,7 @@ public class ChapterService {
 
     public List<Chapter> getAllChaptersByLectionId(Long id){
         List<Chapter> chatpers = chapterRepository.findAll();
-        chatpers.removeIf(chapter -> !Objects.equals(chapter.getLection(), id));
+        chatpers.removeIf(chapter -> !Objects.equals(chapter.getLectionId(), id));
         return chatpers;
     }
 

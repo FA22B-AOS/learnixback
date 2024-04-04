@@ -1,6 +1,7 @@
 package de.szut.learnixback;
 
 import de.szut.learnixback.entities.Chapter;
+import de.szut.learnixback.entities.ChapterContent;
 import de.szut.learnixback.entities.Lection;
 import de.szut.learnixback.repositories.*;
 import org.springframework.boot.CommandLineRunner;
@@ -14,32 +15,80 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     private final LectionRepository lectionRepository;
     private final ChapterRepository chapterRepository;
+    private final ChapterContentRepository chapterContentRepository;
 
     public DatabaseInitializer(LectionRepository lectionRepository,
-                               ChapterRepository chapterRepository) {
+                               ChapterRepository chapterRepository,
+                               ChapterContentRepository chapterContentRepository) {
         this.lectionRepository = lectionRepository;
         this.chapterRepository = chapterRepository;
+        this.chapterContentRepository = chapterContentRepository;
     }
 
     @Override
     public void run(String... args) {
 
         this.lectionRepository.deleteAll();
+        this.chapterContentRepository.deleteAll();
         this.chapterRepository.deleteAll();
+
 
         List<Lection> lections = new ArrayList<>();
         List<Chapter> chapters = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
-            UUID randomGuid = UUID.randomUUID();
-            Lection lection = new Lection();
-            lection.setTitle("Lecture " + i);
-            lection.setCreatorGuid(randomGuid.toString());
-            lections.add(lectionRepository.save(lection));
-            for (int j = 1; j <= 10; j++){
-                Chapter chapter = new Chapter();
-                chapter.setLection(lection.getLectionId());
-                chapter.setChapterName("Chapter"+j);
-                chapters.add(chapterRepository.save(chapter));
+        List<ChapterContent> chapterContents = new ArrayList<>();
+
+        Lection javaLection = new Lection();
+        javaLection.setTitle("Java for Beginners");
+        javaLection.setCreatorGuid( UUID.randomUUID().toString());
+        javaLection.setTopicType("CS");
+        javaLection.setDescription("In diesem Kurs werden dir die grundlegenden Kenntnisse der Java Programmiersprache beigebracht.");
+        lections.add(lectionRepository.save(javaLection));
+
+        Lection pythonLection = new Lection();
+        pythonLection.setTitle("Python for Beginners");
+        pythonLection.setCreatorGuid( UUID.randomUUID().toString());
+        pythonLection.setTopicType("CS");
+        pythonLection.setDescription("In diesem Kurs werden dir die grundlegenden Kenntnisse der Python Programmiersprache beigebracht.");
+        lections.add(lectionRepository.save(pythonLection));
+
+        Lection englishLection = new Lection();
+        englishLection.setTitle("English 101");
+        englishLection.setCreatorGuid( UUID.randomUUID().toString());
+        englishLection.setTopicType("Lang");
+        englishLection.setDescription("Starte mit dem Kurs deinen Einstieg in die Englische Sprache.");
+        lections.add(lectionRepository.save(englishLection));
+
+        Lection analysisLection = new Lection();
+        analysisLection.setTitle("Simple Analysis");
+        analysisLection.setCreatorGuid( UUID.randomUUID().toString());
+        analysisLection.setTopicType("Math");
+        analysisLection.setDescription("Bereite dich auf deine Mathe Abiturprüfung mit dem Analysis Mathekurs vor.");
+        lections.add(lectionRepository.save(analysisLection));
+
+        Lection gimpLection = new Lection();
+        gimpLection.setTitle("How to GIMP");
+        gimpLection.setCreatorGuid( UUID.randomUUID().toString());
+        gimpLection.setTopicType("Art");
+        gimpLection.setDescription("Lerne das Grafiktool GIMP kennen um deine Kunstprojekte umzusetzen.");
+        lections.add(lectionRepository.save(gimpLection));
+
+        for(Lection lection: lections) {
+            if (lection.getTitle().equals("Java for Beginners")){
+                Chapter dataTypes = new Chapter("Datentypen",lection.getLectionId());
+                Chapter kontrollstrukturen = new Chapter("Kontrollstrukturen", lection.getLectionId());
+                Chapter schleifen = new Chapter("Schleifen", lection.getLectionId());
+                Chapter keywords = new Chapter("Keywords", lection.getLectionId());
+                chapterRepository.save(dataTypes);
+                chapterRepository.save(kontrollstrukturen);
+                chapterRepository.save(schleifen);
+                chapterRepository.save(keywords);
+                chapterContentRepository.save(new ChapterContent("Primitive DatenTypen","<ul><li>char</li><li>byte</li><li>short</li><li>int</li><li>long</li><li>float</li><li>double</li><li>boolean</li></ul>",
+                        0,0,dataTypes.getChapterId()));
+
+                continue;
+            }
+            for (int j = 1; j <= 10; j++) {
+                chapters.add(chapterRepository.save(new Chapter("Chapter " + j, lection.getLectionId())));
             }
         }
     }

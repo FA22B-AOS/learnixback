@@ -1,10 +1,15 @@
 package de.szut.learnixback.services;
 
+import de.szut.learnixback.entities.Chapter;
 import de.szut.learnixback.entities.ChapterContent;
 import de.szut.learnixback.repositories.ChapterContentRepository;
+import org.apache.logging.log4j.util.PropertySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -15,6 +20,13 @@ public class ChapterContentService {
 
     public List<ChapterContent> getAllChapterContents() {
         return chapterContentRepository.findAll();
+    }
+
+    public List<ChapterContent> getAllChapterContentsFromChapter(Long id){
+        List<ChapterContent> contents = chapterContentRepository.findAll();
+        contents.removeIf(content -> !Objects.equals(content.getChapterId(), id));
+        contents.sort(Comparator.comparingLong(ChapterContent::getChapterId));
+        return contents;
     }
 
     public Optional<ChapterContent> getChapterContentById(Long id) {
