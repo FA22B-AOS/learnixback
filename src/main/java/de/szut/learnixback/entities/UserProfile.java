@@ -12,6 +12,10 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserProfile {
 
+    public UserProfile(UUID userGUID){
+        this.userGUID = userGUID;
+    }
+
     @Id
     private UUID userGUID;
 
