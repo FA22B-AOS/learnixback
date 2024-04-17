@@ -18,7 +18,7 @@ public class LectionProgressService {
     @Autowired
     private LectionProgressRepository lectionProgressRepository;
 
-    public LectionProgress createLectionProgress(UUID userGUID, Long lectionID){
+    public LectionProgress createLectionProgress(String userGUID, Long lectionID){
         LectionProgressKey id = new LectionProgressKey(userGUID, lectionID);
         if(this.lectionProgressRepository.existsById(id))
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Progress Eintrag existiert bereits");
@@ -26,7 +26,7 @@ public class LectionProgressService {
             return this.lectionProgressRepository.save(new LectionProgress(userGUID, lectionID));
     }
 
-    public LectionProgress updateProgress(UUID userGUID, Long lectionID, Float newProgress){
+    public LectionProgress updateProgress(String userGUID, Long lectionID, Float newProgress){
         LectionProgressKey id = new LectionProgressKey(userGUID, lectionID);
         if(this.lectionProgressRepository.existsById(id)){
             LectionProgress progress = this.lectionProgressRepository.findById(id).get();
@@ -37,7 +37,7 @@ public class LectionProgressService {
         }
     }
 
-    public boolean deleteProgress(UUID userGUID, Long lectionID){
+    public boolean deleteProgress(String userGUID, Long lectionID){
         LectionProgressKey id = new LectionProgressKey(userGUID, lectionID);
         if(this.lectionProgressRepository.existsById(id)){
             this.lectionProgressRepository.deleteById(id);
@@ -45,7 +45,7 @@ public class LectionProgressService {
         } else return false;
     }
 
-    public LectionProgress getLectionProgress(UUID userGUID, Long lectionID){
+    public LectionProgress getLectionProgress(String userGUID, Long lectionID){
         LectionProgressKey id = new LectionProgressKey(userGUID, lectionID);
         if(this.lectionProgressRepository.existsById(id))
             return this.lectionProgressRepository.findById(id).get();
@@ -53,7 +53,7 @@ public class LectionProgressService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Progress Eintrag nicht gefunden");
     }
 
-    public List<LectionProgress> getUserProgress(UUID userGUID){
+    public List<LectionProgress> getUserProgress(String userGUID){
         return this.lectionProgressRepository.findAll().stream().filter(
                 p -> p.getUserGUID() == userGUID
         ).collect(Collectors.toList());

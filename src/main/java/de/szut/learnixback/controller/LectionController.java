@@ -22,6 +22,13 @@ public class LectionController {
         return new ResponseEntity<>(lections, HttpStatus.OK);
     }
 
+    @GetMapping("/byUser/{userGUID}")
+    public ResponseEntity<List<Lection>> getSubscribedLections(@PathVariable String userGUID) {
+        List<Lection> lections = lectionService.getSubscribedLections(userGUID);
+        return new ResponseEntity<>(lections, HttpStatus.OK);
+    }
+
+
     @GetMapping("/{id}")
     public ResponseEntity<Lection> getLectionById(@PathVariable Long id) {
         Optional<Lection> lection = lectionService.getLectionById(id);

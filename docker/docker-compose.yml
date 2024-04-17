@@ -4,7 +4,7 @@ services:
   keycloak_learnix:
     image: quay.io/keycloak/keycloak:23.0
     volumes:
-      - ./imports:/opt/keycloak/imports
+      - ./imports:/opt/keycloak/data/import
     command:
       - start-dev
       - --import-realm

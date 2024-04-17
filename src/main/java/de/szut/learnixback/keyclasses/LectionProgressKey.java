@@ -1,17 +1,23 @@
 package de.szut.learnixback.keyclasses;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
+@Getter @Setter
+@NoArgsConstructor
 public class LectionProgressKey implements Serializable {
-    private final UUID foreignKey1;
-    private final Long foreignKey2;
+    private String userGUID;
+    private Long lectionID;
 
 
-    public LectionProgressKey(UUID foreignKey1, Long foreignKey2) {
-        this.foreignKey1 = foreignKey1;
-        this.foreignKey2 = foreignKey2;
+    public LectionProgressKey(String userGUID, Long lectionID) {
+        this.userGUID = userGUID;
+        this.lectionID = lectionID;
     }
 
     @Override
@@ -19,11 +25,11 @@ public class LectionProgressKey implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LectionProgressKey that = (LectionProgressKey) o;
-        return Objects.equals(foreignKey1, that.foreignKey1) && Objects.equals(foreignKey2, that.foreignKey2);
+        return Objects.equals(userGUID, that.userGUID) && Objects.equals(lectionID, that.lectionID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(foreignKey1, foreignKey2);
+        return Objects.hash(userGUID, lectionID);
     }
 }

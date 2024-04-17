@@ -1,4 +1,4 @@
-package de.szut.learnixback;
+/*package de.szut.learnixback;
 
 import de.szut.learnixback.entities.Chapter;
 import de.szut.learnixback.entities.ChapterContent;
@@ -92,4 +92,4 @@ public class DatabaseInitializer implements CommandLineRunner {
             }
         }
     }
-}
+}*/
