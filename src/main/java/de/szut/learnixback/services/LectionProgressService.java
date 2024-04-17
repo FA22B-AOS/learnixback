@@ -26,7 +26,7 @@ public class LectionProgressService {
             return this.lectionProgressRepository.save(new LectionProgress(userGUID, lectionID));
     }
 
-    public LectionProgress updateProgress(String userGUID, Long lectionID, Float newProgress){
+    public LectionProgress updateProgress(String userGUID, Long lectionID, Integer newProgress){
         LectionProgressKey id = new LectionProgressKey(userGUID, lectionID);
         if(this.lectionProgressRepository.existsById(id)){
             LectionProgress progress = this.lectionProgressRepository.findById(id).get();

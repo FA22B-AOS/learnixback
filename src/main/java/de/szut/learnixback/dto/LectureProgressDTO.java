@@ -9,5 +9,5 @@ import lombok.Setter;
 public class LectureProgressDTO {
     private String userGUID;
     private Long lectionID;
-    private Float progress;
+    private Integer progress;
 }

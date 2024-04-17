@@ -16,12 +16,12 @@ public class LectionProgress {
     public LectionProgress(String userGUID, Long lectionID){
         this.userGUID = userGUID;
         this.lectionID = lectionID;
-        this.progress = 0f;
+        this.progress = 0;
     }
 
     @Id
     private String userGUID;
-    private Float progress;
+    private Integer progress;
 
     @Id
     @Column(name = "lection_Id")
