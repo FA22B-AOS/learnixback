@@ -35,6 +35,12 @@ public class ChapterController {
         return new ResponseEntity<>(chapters, HttpStatus.OK);
     }
 
+    @GetMapping("/countByLection/{id}")
+    public ResponseEntity<Integer> getChapterCountByLectureId(@PathVariable Long id){
+        int chapterCount = chapterService.getChapterCountByLectionId(id);
+        return new ResponseEntity<>(chapterCount, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Chapter> createChapter(@RequestBody Chapter chapter) {
         Chapter createdChapter = chapterService.createChapter(chapter);

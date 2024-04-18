@@ -1,6 +1,7 @@
 package de.szut.learnixback.services;
 
 import de.szut.learnixback.controller.LectionController;
+import de.szut.learnixback.entities.Chapter;
 import de.szut.learnixback.entities.Lection;
 import de.szut.learnixback.entities.LectionProgress;
 import de.szut.learnixback.repositories.LectionProgressRepository;

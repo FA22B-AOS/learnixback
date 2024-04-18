@@ -10,9 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ChapterContent {
 
-    public ChapterContent(String title, String contnent, int contentOrder, int contentType, Long chapterId){
+    public ChapterContent(String title, String content, int contentOrder, int contentType, Long chapterId){
         this.title = title;
-        this.contnent = contnent;
+        this.content = content;
         this.contentOrder = contentOrder;
         this.contentType = contentType;
         this.chapterId = chapterId;
@@ -23,7 +23,7 @@ public class ChapterContent {
     private Long chapterContentId;
 
     private String title;
-    private String contnent;
+    private String content;
     private int contentOrder;
     private int contentType;
 
