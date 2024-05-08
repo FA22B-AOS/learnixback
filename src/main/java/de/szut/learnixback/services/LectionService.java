@@ -1,11 +1,17 @@
 package de.szut.learnixback.services;
 
+import de.szut.learnixback.controller.LectionController;
+import de.szut.learnixback.entities.Chapter;
 import de.szut.learnixback.entities.Lection;
+import de.szut.learnixback.entities.LectionProgress;
+import de.szut.learnixback.repositories.LectionProgressRepository;
 import de.szut.learnixback.repositories.LectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LectionService {
@@ -13,8 +19,21 @@ public class LectionService {
     @Autowired
     private LectionRepository lectionRepository;
 
+    @Autowired
+    private LectionProgressRepository lectionProgressRepository;
+
     public List<Lection> getAllLections() {
         return lectionRepository.findAll();
+    }
+
+    public List<Lection> getSubscribedLections(String userGUID){
+        List<Long> lectionIds = this.lectionProgressRepository.findAll()
+                .stream()
+                .filter(p -> p.getUserGUID().equals(userGUID))
+                .map(LectionProgress::getLectionID)
+                .collect(Collectors.toList());
+
+        return this.lectionRepository.findAllById(lectionIds);
     }
 
     public Optional<Lection> getLectionById(Long id) {
