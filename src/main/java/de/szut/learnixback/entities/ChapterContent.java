@@ -23,7 +23,10 @@ public class ChapterContent {
     private Long chapterContentId;
 
     private String title;
+
+    @Column(columnDefinition="TEXT", length = 2048)
     private String content;
+
     private int contentOrder;
     private int contentType;
 
