@@ -28,6 +28,12 @@ public class ChapterService {
         return chatpers;
     }
 
+    public int getChapterCountByLectionId(Long id){
+        List<Chapter> chatpers = chapterRepository.findAll();
+        chatpers.removeIf(chapter -> chapter.getLectionId().longValue() != id.longValue());
+        return chatpers.size();
+    }
+
     public Chapter createChapter(Chapter chapter) {
         return chapterRepository.save(chapter);
     }

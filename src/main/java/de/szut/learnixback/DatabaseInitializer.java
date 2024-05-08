@@ -1,4 +1,4 @@
-package de.szut.learnixback;
+/*package de.szut.learnixback;
 
 import de.szut.learnixback.entities.Chapter;
 import de.szut.learnixback.entities.ChapterContent;
@@ -17,12 +17,16 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final ChapterRepository chapterRepository;
     private final ChapterContentRepository chapterContentRepository;
 
+    private final LectionProgressRepository lectionProgressRepository;
+
     public DatabaseInitializer(LectionRepository lectionRepository,
                                ChapterRepository chapterRepository,
-                               ChapterContentRepository chapterContentRepository) {
+                               ChapterContentRepository chapterContentRepository,
+                               LectionProgressRepository lectionProgressRepository) {
         this.lectionRepository = lectionRepository;
         this.chapterRepository = chapterRepository;
         this.chapterContentRepository = chapterContentRepository;
+        this.lectionProgressRepository = lectionProgressRepository;
     }
 
     @Override
@@ -31,6 +35,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         this.lectionRepository.deleteAll();
         this.chapterContentRepository.deleteAll();
         this.chapterRepository.deleteAll();
+        this.lectionProgressRepository.deleteAll();
 
 
         List<Lection> lections = new ArrayList<>();
@@ -92,4 +97,4 @@ public class DatabaseInitializer implements CommandLineRunner {
             }
         }
     }
-}
+}*/
