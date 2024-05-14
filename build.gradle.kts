@@ -28,6 +28,8 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.hibernate.validator:hibernate-validator:6.2.0.Final")
+
 }
 
 tasks.withType<Test> {
