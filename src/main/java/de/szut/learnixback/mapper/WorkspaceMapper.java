@@ -12,6 +12,7 @@ public class WorkspaceMapper {
         workspaceDto.setId(workspace.getId());
         workspaceDto.setName(workspace.getName());
         workspaceDto.setOwnerId(workspace.getOwnerId());
+        workspaceDto.setPublicWorkspace(workspace.isPublicWorkspace());
         workspaceDto.setMemberIds(workspace.getMemberIds());
         return workspaceDto;
     }

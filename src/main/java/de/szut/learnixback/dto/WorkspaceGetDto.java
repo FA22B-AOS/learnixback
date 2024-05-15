@@ -11,5 +11,6 @@ public class WorkspaceGetDto {
     private Long id;
     private String name;
     private Long ownerId;
+    private boolean publicWorkspace;
     private List<Long> memberIds;
 }

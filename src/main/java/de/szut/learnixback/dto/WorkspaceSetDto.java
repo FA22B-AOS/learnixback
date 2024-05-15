@@ -10,5 +10,6 @@ import java.util.List;
 public class WorkspaceSetDto {
     private String name;
     private Long ownerId;
+    private boolean publicWorkspace;
     private List<Long> memberIds;
 }
