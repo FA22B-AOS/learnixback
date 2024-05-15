@@ -25,7 +25,7 @@ public class ChapterContentService {
     public List<ChapterContent> getAllChapterContentsFromChapter(Long id){
         List<ChapterContent> contents = chapterContentRepository.findAll();
         contents.removeIf(content -> !Objects.equals(content.getChapterId(), id));
-        contents.sort(Comparator.comparingLong(ChapterContent::getChapterId));
+        contents.sort(Comparator.comparingLong(ChapterContent::getContentOrder));
         return contents;
     }
 
