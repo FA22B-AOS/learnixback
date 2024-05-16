@@ -37,8 +37,16 @@ public class ChapterContentController {
 
     @PostMapping
     public ResponseEntity<ChapterContent> createChapterContent(@RequestBody ChapterContent chapterContent) {
-        ChapterContent createdChapterContent = chapterContentService.createChapterContent(chapterContent);
-        return new ResponseEntity<>(createdChapterContent, HttpStatus.CREATED);
+        return new ResponseEntity<>(chapterContentService.createChapterContent(chapterContent), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id}/move")
+    public ResponseEntity<Void> moveChapterContent(@PathVariable Long id, @RequestBody Boolean moveUp) {
+        if(chapterContentService.moveChapterContent(id, moveUp)){
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
     @PutMapping("/{id}")
