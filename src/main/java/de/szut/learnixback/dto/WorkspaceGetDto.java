@@ -10,7 +10,7 @@ import java.util.List;
 public class WorkspaceGetDto {
     private Long id;
     private String name;
-    private Long ownerId;
+    private String ownerId;
     private boolean publicWorkspace;
-    private List<Long> memberIds;
+    private List<String> memberIds;
 }

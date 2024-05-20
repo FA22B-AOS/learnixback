@@ -9,7 +9,7 @@ import java.util.List;
 @Setter
 public class WorkspaceSetDto {
     private String name;
-    private Long ownerId;
+    private String ownerId;
     private boolean publicWorkspace;
-    private List<Long> memberIds;
+    private List<String> memberIds;
 }

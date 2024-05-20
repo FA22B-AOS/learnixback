@@ -3,13 +3,11 @@ package de.szut.learnixback.controller;
 import de.szut.learnixback.customExceptionHandling.WorkspaceNotFoundException;
 import de.szut.learnixback.dto.WorkspaceGetDto;
 import de.szut.learnixback.dto.WorkspaceSetDto;
-import de.szut.learnixback.entities.Lection;
 import de.szut.learnixback.entities.Workspace;
 import de.szut.learnixback.mapper.WorkspaceMapper;
+import de.szut.learnixback.services.KeycloakService;
 import de.szut.learnixback.services.WorkspaceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +24,8 @@ public class WorkspaceController {
     private final WorkspaceService workspaceService;
 
     private final WorkspaceMapper workspaceMapper;
+
+    private final KeycloakService keycloakService;
 
     @PostMapping
     public ResponseEntity<?> createWorkspace(@RequestBody WorkspaceSetDto workspaceSetDto) {
@@ -73,7 +73,9 @@ public class WorkspaceController {
     }
 
     @DeleteMapping("/{workspaceId}")
-    public ResponseEntity<?> deleteWorkspace(@PathVariable Long workspaceId, @RequestParam String ownerId) {
+    public ResponseEntity<?> deleteWorkspace(@PathVariable Long workspaceId, @RequestHeader("Authorization") String token) {
+        String ownerId = keycloakService.getUserIdFromToken(token);
+
         try {
             boolean deleted = workspaceService.deleteWorkspace(workspaceId, ownerId);
             if (deleted) {
@@ -83,6 +85,26 @@ public class WorkspaceController {
             }
         } catch (WorkspaceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/member")
+    public ResponseEntity<?> getWorkspacesWhereMember(@RequestHeader("Authorization") String token) {
+        try {
+            String userId = keycloakService.getUserIdFromToken(token);
+
+            List<Workspace> workspaces = this.workspaceService.getWorkspacesWhereMember(userId);
+            if (workspaces.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No workspaces found for the given user.");
+            }
+
+            List<WorkspaceGetDto> workspaceGetDtoList = workspaces.stream()
+                    .map(this.workspaceMapper::mapWorkspaceToDto)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(workspaceGetDtoList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while processing the request.");
         }
     }
 

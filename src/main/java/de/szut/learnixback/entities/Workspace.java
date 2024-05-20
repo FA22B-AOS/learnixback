@@ -26,13 +26,13 @@ public class Workspace {
     private String name;
 
     @Column(name = "owner_id", nullable = false)
-    private Long ownerId;
+    private String ownerId;
 
     @Column(name = "public")
     private boolean publicWorkspace;
 
     @ElementCollection
     @Column(name = "member_id")
-    private List<Long> memberIds = new ArrayList<>();
+    private List<String> memberIds = new ArrayList<>();
 
 }

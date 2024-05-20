@@ -51,4 +51,10 @@ public class WorkspaceService {
         }
         throw new WorkspaceNotFoundException("Workspace not found with ID: " + workspaceId);
     }
+
+    public List<Workspace> getWorkspacesWhereMember(String userId) {
+        return workspaceRepository.findAll().stream()
+                .filter(workspace -> workspace.getMemberIds().contains(userId))
+                .collect(Collectors.toList());
+    }
 }
