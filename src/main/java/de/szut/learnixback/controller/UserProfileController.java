@@ -31,4 +31,16 @@ public class UserProfileController {
             return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
         }
     }
+
+    @PostMapping("/{userGUID}/name")
+    public ResponseEntity<String> saveName(@PathVariable UUID userGUID, @RequestParam("name") String name) {
+        try {
+            userProfileService.saveName(userGUID, name);
+            return ResponseEntity.ok("Vor und Nachname wurde erfolgreich gespeichert");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Fehler beim Speichern des Namens");
+
+        }
+    }
 }

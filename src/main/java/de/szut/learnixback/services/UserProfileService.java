@@ -26,4 +26,13 @@ public class UserProfileService {
         // Profilbild speichern
         userProfileRepository.save(userProfile);
     }
+
+    public void saveName(UUID userGUID, String name) {
+        UserProfile userProfile = userProfileRepository.findById(userGUID)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Benutzerprofil nicht gefunden"));
+
+        userProfile.setName(name);
+
+        userProfileRepository.save(userProfile);
+    }
 }
