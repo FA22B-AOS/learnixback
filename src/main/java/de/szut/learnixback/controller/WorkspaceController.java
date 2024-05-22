@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class WorkspaceController {
 
     @GetMapping
     public ResponseEntity<List<WorkspaceGetDto>> getAllWorkspaces() {
-        List<WorkspaceGetDto> workspacesList = new ArrayList<>();
+        List<WorkspaceGetDto> workspacesList;
         List<Workspace> workspaces = this.workspaceService.getAllWorkspaces();
         workspacesList = workspaces.stream()
                 .map(this.workspaceMapper::mapWorkspaceToDto)
@@ -108,5 +109,82 @@ public class WorkspaceController {
         }
     }
 
+    @PostMapping("/{workspaceId}/members")
+    public ResponseEntity<?> addMemberToWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestHeader("Authorization") String token) {
+        String userId = keycloakService.getUserIdFromToken(token);
+        try {
+            workspaceService.addMemberToWorkspace(workspaceId, memberId, userId);
+            return ResponseEntity.ok("Member added successfully");
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to add members to this workspace");
+        } catch (WorkspaceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{workspaceId}/members")
+    public ResponseEntity<?> removeMemberFromWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestHeader("Authorization") String token) {
+        String userId = keycloakService.getUserIdFromToken(token);
+        try {
+            workspaceService.removeMemberFromWorkspace(workspaceId, memberId, userId);
+            return ResponseEntity.ok("Member removed successfully");
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to remove members from this workspace");
+        } catch (WorkspaceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{workspaceId}/moderators")
+    public ResponseEntity<?> addModeratorToWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestHeader("Authorization") String token) {
+        String userId = keycloakService.getUserIdFromToken(token);
+        try {
+            workspaceService.addModeratorToWorkspace(workspaceId, memberId, userId);
+            return ResponseEntity.ok("Moderator added successfully");
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to add moderators to this workspace");
+        } catch (WorkspaceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{workspaceId}/moderators")
+    public ResponseEntity<?> removeModeratorFromWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestHeader("Authorization") String token) {
+        String userId = keycloakService.getUserIdFromToken(token);
+        try {
+            workspaceService.removeModeratorFromWorkspace(workspaceId, memberId, userId);
+            return ResponseEntity.ok("Moderator removed successfully");
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to remove moderators from this workspace");
+        } catch (WorkspaceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{workspaceId}/members")
+    public ResponseEntity<?> getMembersOfWorkspace(@PathVariable Long workspaceId, @RequestHeader("Authorization") String token) {
+        String userId = keycloakService.getUserIdFromToken(token);
+        try {
+            List<String> members = workspaceService.getMembersOfWorkspace(workspaceId, userId);
+            return ResponseEntity.ok(members);
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to view members of this workspace");
+        } catch (WorkspaceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{workspaceId}/moderators")
+    public ResponseEntity<?> getModeratorsOfWorkspace(@PathVariable Long workspaceId, @RequestHeader("Authorization") String token) {
+        String userId = keycloakService.getUserIdFromToken(token);
+        try {
+            List<String> moderators = workspaceService.getModeratorsOfWorkspace(workspaceId, userId);
+            return ResponseEntity.ok(moderators);
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to view moderators of this workspace");
+        } catch (WorkspaceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
 }
