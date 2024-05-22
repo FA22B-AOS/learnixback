@@ -5,28 +5,25 @@ import de.szut.learnixback.dto.WorkspaceGetDto;
 import de.szut.learnixback.dto.WorkspaceSetDto;
 import de.szut.learnixback.entities.Workspace;
 import de.szut.learnixback.mapper.WorkspaceMapper;
-import de.szut.learnixback.services.KeycloakService;
 import de.szut.learnixback.services.WorkspaceService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/workspaces")
-@RequiredArgsConstructor
 public class WorkspaceController {
 
-    private final WorkspaceService workspaceService;
+    @Autowired
+    private WorkspaceService workspaceService;
 
-    private final WorkspaceMapper workspaceMapper;
-
-    private final KeycloakService keycloakService;
+    @Autowired
+    private WorkspaceMapper workspaceMapper;
 
     @PostMapping
     public ResponseEntity<?> createWorkspace(@RequestBody WorkspaceSetDto workspaceSetDto) {
@@ -74,11 +71,11 @@ public class WorkspaceController {
     }
 
     @DeleteMapping("/{workspaceId}")
-    public ResponseEntity<?> deleteWorkspace(@PathVariable Long workspaceId, @RequestHeader("Authorization") String token) {
-        String ownerId = keycloakService.getUserIdFromToken(token);
+    public ResponseEntity<?> deleteWorkspace(@PathVariable Long workspaceId, @RequestParam String userId, @RequestHeader("Authorization") String token) {
+        // String userId = keycloakService.getUserIdFromToken(token);
 
         try {
-            boolean deleted = workspaceService.deleteWorkspace(workspaceId, ownerId);
+            boolean deleted = workspaceService.deleteWorkspace(workspaceId, userId);
             if (deleted) {
                 return ResponseEntity.ok("Workspace successfully deleted");
             } else {
@@ -90,9 +87,9 @@ public class WorkspaceController {
     }
 
     @GetMapping("/member")
-    public ResponseEntity<?> getWorkspacesWhereMember(@RequestHeader("Authorization") String token) {
+    public ResponseEntity<?> getWorkspacesWhereMember(@RequestParam String userId, @RequestHeader("Authorization") String token) {
         try {
-            String userId = keycloakService.getUserIdFromToken(token);
+            // String userId = keycloakService.getUserIdFromToken(token);
 
             List<Workspace> workspaces = this.workspaceService.getWorkspacesWhereMember(userId);
             if (workspaces.isEmpty()) {
@@ -110,8 +107,8 @@ public class WorkspaceController {
     }
 
     @PostMapping("/{workspaceId}/members")
-    public ResponseEntity<?> addMemberToWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestHeader("Authorization") String token) {
-        String userId = keycloakService.getUserIdFromToken(token);
+    public ResponseEntity<?> addMemberToWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestParam String userId, @RequestHeader("Authorization") String token) {
+        // String userId = keycloakService.getUserIdFromToken(token);
         try {
             workspaceService.addMemberToWorkspace(workspaceId, memberId, userId);
             return ResponseEntity.ok("Member added successfully");
@@ -123,8 +120,8 @@ public class WorkspaceController {
     }
 
     @DeleteMapping("/{workspaceId}/members")
-    public ResponseEntity<?> removeMemberFromWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestHeader("Authorization") String token) {
-        String userId = keycloakService.getUserIdFromToken(token);
+    public ResponseEntity<?> removeMemberFromWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestParam String userId, @RequestHeader("Authorization") String token) {
+        // String userId = keycloakService.getUserIdFromToken(token);
         try {
             workspaceService.removeMemberFromWorkspace(workspaceId, memberId, userId);
             return ResponseEntity.ok("Member removed successfully");
@@ -136,8 +133,8 @@ public class WorkspaceController {
     }
 
     @PostMapping("/{workspaceId}/moderators")
-    public ResponseEntity<?> addModeratorToWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestHeader("Authorization") String token) {
-        String userId = keycloakService.getUserIdFromToken(token);
+    public ResponseEntity<?> addModeratorToWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestParam String userId, @RequestHeader("Authorization") String token) {
+        // String userId = keycloakService.getUserIdFromToken(token);
         try {
             workspaceService.addModeratorToWorkspace(workspaceId, memberId, userId);
             return ResponseEntity.ok("Moderator added successfully");
@@ -149,8 +146,8 @@ public class WorkspaceController {
     }
 
     @DeleteMapping("/{workspaceId}/moderators")
-    public ResponseEntity<?> removeModeratorFromWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestHeader("Authorization") String token) {
-        String userId = keycloakService.getUserIdFromToken(token);
+    public ResponseEntity<?> removeModeratorFromWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestParam String userId, @RequestHeader("Authorization") String token) {
+        // String userId = keycloakService.getUserIdFromToken(token);
         try {
             workspaceService.removeModeratorFromWorkspace(workspaceId, memberId, userId);
             return ResponseEntity.ok("Moderator removed successfully");
@@ -162,8 +159,8 @@ public class WorkspaceController {
     }
 
     @GetMapping("/{workspaceId}/members")
-    public ResponseEntity<?> getMembersOfWorkspace(@PathVariable Long workspaceId, @RequestHeader("Authorization") String token) {
-        String userId = keycloakService.getUserIdFromToken(token);
+    public ResponseEntity<?> getMembersOfWorkspace(@PathVariable Long workspaceId, @RequestParam String userId, @RequestHeader("Authorization") String token) {
+        // String userId = keycloakService.getUserIdFromToken(token);
         try {
             List<String> members = workspaceService.getMembersOfWorkspace(workspaceId, userId);
             return ResponseEntity.ok(members);
@@ -175,8 +172,8 @@ public class WorkspaceController {
     }
 
     @GetMapping("/{workspaceId}/moderators")
-    public ResponseEntity<?> getModeratorsOfWorkspace(@PathVariable Long workspaceId, @RequestHeader("Authorization") String token) {
-        String userId = keycloakService.getUserIdFromToken(token);
+    public ResponseEntity<?> getModeratorsOfWorkspace(@PathVariable Long workspaceId, @RequestParam String userId, @RequestHeader("Authorization") String token) {
+        // String userId = keycloakService.getUserIdFromToken(token);
         try {
             List<String> moderators = workspaceService.getModeratorsOfWorkspace(workspaceId, userId);
             return ResponseEntity.ok(moderators);

@@ -31,6 +31,9 @@ public class Workspace {
     @Column(name = "public")
     private boolean publicWorkspace;
 
+    @Column(name = "inviteonly")
+    private boolean inviteOnly;
+
     @ElementCollection
     @Column(name = "member_ids")
     private List<String> memberIds = new ArrayList<>();
@@ -39,7 +42,7 @@ public class Workspace {
     @Column(name = "moderator_ids")
     private List<String> moderatorIds = new ArrayList<>();
 
-    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Lection> lections = new ArrayList<>();
+//    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Lection> lections = new ArrayList<>();
 
 }

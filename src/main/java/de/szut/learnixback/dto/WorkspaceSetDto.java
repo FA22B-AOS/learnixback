@@ -12,6 +12,7 @@ public class WorkspaceSetDto {
     private String name;
     private String ownerId;
     private boolean publicWorkspace;
+    private boolean inviteOnly;
     private List<String> memberIds;
     private List<String> moderatorIds;
     private List<Lection> lections;
