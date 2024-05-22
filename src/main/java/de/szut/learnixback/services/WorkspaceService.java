@@ -1,5 +1,6 @@
 package de.szut.learnixback.services;
 
+import de.szut.learnixback.customExceptionHandling.MemberAlreadyExistsException;
 import de.szut.learnixback.customExceptionHandling.WorkspaceNotFoundException;
 import de.szut.learnixback.dto.WorkspaceSetDto;
 import de.szut.learnixback.entities.Workspace;
@@ -63,12 +64,23 @@ public class WorkspaceService {
     }
 
     // Administer workspace-members and moderators
-    public void addMemberToWorkspace(Long workspaceId, String memberId, String userId) throws AccessDeniedException {
+    public void addMemberToWorkspace(Long workspaceId, String memberId, String userId)
+            throws AccessDeniedException, WorkspaceNotFoundException, MemberAlreadyExistsException {
         Workspace workspace = getWorkspaceById(workspaceId);
+
+        if (workspace == null) {
+            throw new WorkspaceNotFoundException("Workspace not found");
+        }
+
+        // Check if the user is authorized to add members
         if (!workspace.getOwnerId().equals(userId) && !workspace.getModeratorIds().contains(userId)) {
             throw new AccessDeniedException("You are not authorized to add members to this workspace.");
         }
-        if (!workspace.getMemberIds().contains(memberId)) {
+
+        // Check if the member is already part of the workspace
+        if (workspace.getMemberIds().contains(memberId)) {
+            throw new MemberAlreadyExistsException("Member is already part of the workspace.");
+        } else {
             workspace.getMemberIds().add(memberId);
             workspaceRepository.save(workspace);
         }

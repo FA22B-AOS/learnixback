@@ -1,5 +1,6 @@
 package de.szut.learnixback.controller;
 
+import de.szut.learnixback.customExceptionHandling.MemberAlreadyExistsException;
 import de.szut.learnixback.customExceptionHandling.WorkspaceNotFoundException;
 import de.szut.learnixback.dto.WorkspaceGetDto;
 import de.szut.learnixback.dto.WorkspaceSetDto;
@@ -107,8 +108,12 @@ public class WorkspaceController {
     }
 
     @PostMapping("/{workspaceId}/members")
-    public ResponseEntity<?> addMemberToWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestParam String userId, @RequestHeader("Authorization") String token) {
-        // String userId = keycloakService.getUserIdFromToken(token);
+    public ResponseEntity<?> addMemberToWorkspace(
+            @PathVariable Long workspaceId,
+            @RequestParam String memberId,
+            @RequestParam String userId,
+            @RequestHeader("Authorization") String token) {
+
         try {
             workspaceService.addMemberToWorkspace(workspaceId, memberId, userId);
             return ResponseEntity.ok("Member added successfully");
@@ -116,6 +121,10 @@ public class WorkspaceController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to add members to this workspace");
         } catch (WorkspaceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (MemberAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
         }
     }
 
@@ -123,7 +132,7 @@ public class WorkspaceController {
     public ResponseEntity<?> removeMemberFromWorkspace(@PathVariable Long workspaceId, @RequestParam String memberId, @RequestParam String userId, @RequestHeader("Authorization") String token) {
         // String userId = keycloakService.getUserIdFromToken(token);
         try {
-            workspaceService.removeMemberFromWorkspace(workspaceId, memberId, userId);
+            this.workspaceService.removeMemberFromWorkspace(workspaceId, memberId, userId);
             return ResponseEntity.ok("Member removed successfully");
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to remove members from this workspace");
