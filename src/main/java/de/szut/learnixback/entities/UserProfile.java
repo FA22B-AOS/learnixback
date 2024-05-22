@@ -17,4 +17,6 @@ public class UserProfile {
 
     @Lob
     private byte[] profilePicture;
+
+    private String name;
 }
