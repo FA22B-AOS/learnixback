@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class WorkspaceSetDto {
-    private String name;
+    private String title;
     private String ownerId;
     private boolean publicWorkspace;
     private boolean inviteOnly;

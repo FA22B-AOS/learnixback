@@ -21,7 +21,7 @@ public class WorkspaceService {
     // Basic functionality
     public Workspace createWorkspace(WorkspaceSetDto workspaceSetDto){
         Workspace workspace = new Workspace();
-        workspace.setName(workspaceSetDto.getName());
+        workspace.setTitle(workspaceSetDto.getTitle());
         workspace.setOwnerId(workspaceSetDto.getOwnerId());
         workspace.setMemberIds(workspaceSetDto.getMemberIds());
         workspace.setPublicWorkspace(workspaceSetDto.isPublicWorkspace());

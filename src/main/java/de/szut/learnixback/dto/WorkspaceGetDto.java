@@ -9,8 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 public class WorkspaceGetDto {
-    private Long id;
-    private String name;
+    private Long workspaceId;
+    private String title;
     private String ownerId;
     private boolean publicWorkspace;
     private boolean inviteOnly;

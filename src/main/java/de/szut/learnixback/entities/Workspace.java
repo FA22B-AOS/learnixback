@@ -20,10 +20,10 @@ public class Workspace {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long workspaceId;
 
-    @NotBlank(message = "Name is mandatory")
-    private String name;
+    @NotBlank(message = "Title is mandatory")
+    private String title;
 
     @Column(name = "owner_id", nullable = false)
     private String ownerId;

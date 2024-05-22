@@ -9,11 +9,13 @@ public class WorkspaceMapper {
 
     public WorkspaceGetDto mapWorkspaceToDto(Workspace workspace) {
         WorkspaceGetDto workspaceDto = new WorkspaceGetDto();
-        workspaceDto.setId(workspace.getId());
-        workspaceDto.setName(workspace.getName());
+        workspaceDto.setWorkspaceId(workspace.getWorkspaceId());
+        workspaceDto.setTitle(workspace.getTitle());
         workspaceDto.setOwnerId(workspace.getOwnerId());
         workspaceDto.setPublicWorkspace(workspace.isPublicWorkspace());
+        workspaceDto.setInviteOnly(workspace.isInviteOnly());
         workspaceDto.setMemberIds(workspace.getMemberIds());
+        workspaceDto.setModeratorIds(workspace.getModeratorIds());
         return workspaceDto;
     }
 }
