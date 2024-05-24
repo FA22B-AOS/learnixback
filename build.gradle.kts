@@ -41,6 +41,9 @@ dependencies {
 //	implementation("org.springframework.boot:spring-boot-starter-security")
 //	implementation ("org.springframework.security:spring-security-oauth2-jose")
 //	implementation ("org.keycloak:keycloak-core:24.0.4")
+	implementation ("org.springframework.boot:spring-boot-starter-security")
+	implementation("com.auth0:java-jwt:4.4.0")
+	implementation("com.auth0:jwks-rsa:0.22.1")
 
 
 
