@@ -87,13 +87,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                 chapterRepository.save(kontrollstrukturen);
                 chapterRepository.save(schleifen);
                 chapterRepository.save(keywords);
-                chapterContentRepository.save(new ChapterContent("Primitive DatenTypen","<ul><li>char</li><li>byte</li><li>short</li><li>int</li><li>long</li><li>float</li><li>double</li><li>boolean</li></ul>",
-                        0,0,dataTypes.getChapterId()));
-                chapterContentRepository.save(new ChapterContent("Tabelle","<table>  <tr>    <th>Company</th>    <th>Contact</th>    <th>Country</th>  </tr>  <tr>    <td>Alfreds Futterkiste</td>    <td>Maria Anders</td>    <td>Germany</td>  </tr>  <tr>    <td>Centro comercial Moctezuma</td>    <td>Francisco Chang</td>    <td>Mexico</td>  </tr>  <tr>    <td>Ernst Handel</td>    <td>Roland Mendel</td>    <td>Austria</td>  </tr>  <tr>    <td>Island Trading</td>    <td>Helen Bennett</td>    <td>UK</td>  </tr>  <tr>    <td>Laughing Bacchus Winecellars</td>    <td>Yoshi Tannamuri</td>    <td>Canada</td>  </tr>  <tr>    <td>Magazzini Alimentari Riuniti</td>    <td>Giovanni Rovelli</td>    <td>Italy</td>  </tr></table>",
-                        1,0,dataTypes.getChapterId()));
-                chapterContentRepository.save(new ChapterContent("Radio Form","<form action=\"/action_page.php\">  <p>Please select your favorite Web language:</p>  <input type=\"radio\" id=\"html\" name=\"fav_language\" value=\"HTML\">  <label for=\"html\">HTML</label><br>  <input type=\"radio\" id=\"css\" name=\"fav_language\" value=\"CSS\">  <label for=\"css\">CSS</label><br>  <input type=\"radio\" id=\"javascript\" name=\"fav_language\" value=\"JavaScript\">  <label for=\"javascript\">JavaScript</label>  <br>    <p>Please select your age:</p>  <input type=\"radio\" id=\"age1\" name=\"age\" value=\"30\">  <label for=\"age1\">0 - 30</label><br>  <input type=\"radio\" id=\"age2\" name=\"age\" value=\"60\">  <label for=\"age2\">31 - 60</label><br>    <input type=\"radio\" id=\"age3\" name=\"age\" value=\"100\">  <label for=\"age3\">61 - 100</label><br><br>  <input type=\"submit\" value=\"Submit\"></form>",
-                        2,0,dataTypes.getChapterId()));
-
+                chapterContentRepository.save(new ChapterContent("Primitive DatenTypen|h3", 0, (byte) 0, dataTypes.getChapterId()));
+                chapterContentRepository.save(new ChapterContent("char,byte,short,int,long,float,double,boolean", 1, (byte) 2, dataTypes.getChapterId()));
                 continue;
             }
             for (int j = 1; j <= 10; j++) {

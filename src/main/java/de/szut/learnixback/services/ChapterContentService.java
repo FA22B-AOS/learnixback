@@ -25,8 +25,47 @@ public class ChapterContentService {
     public List<ChapterContent> getAllChapterContentsFromChapter(Long id){
         List<ChapterContent> contents = chapterContentRepository.findAll();
         contents.removeIf(content -> !Objects.equals(content.getChapterId(), id));
-        contents.sort(Comparator.comparingLong(ChapterContent::getChapterId));
+        contents.sort(Comparator.comparingLong(ChapterContent::getContentOrder));
         return contents;
+    }
+
+    public boolean moveChapterContent(Long id, Boolean moveUp){
+        ChapterContent chapterContentToMove = null;
+        ChapterContent chapterContentToSwitch = null;
+
+        try{
+            chapterContentToMove = getChapterContentById(id).get();
+            List<ChapterContent> contents = getAllChapterContentsFromChapter(chapterContentToMove.getChapterId());
+            if(moveUp){
+                for(int i = 0; i < contents.size(); i++){
+                    if(contents.get(i).equals(chapterContentToMove)) {
+                        chapterContentToSwitch = contents.get(i - 1);
+                        break;
+                    }
+                }
+            } else {
+                for(int i = 0; i < contents.size(); i++){
+                    if(contents.get(i).equals(chapterContentToMove)) {
+                        chapterContentToSwitch = contents.get(i + 1);
+                        break;
+                    }
+                }
+            }
+        }catch (Exception e){
+            return false;
+        }
+
+        if(chapterContentToSwitch == null)
+            return false;
+
+        int tmpPos = chapterContentToSwitch.getContentOrder();
+        chapterContentToSwitch.setContentOrder(chapterContentToMove.getContentOrder());
+        chapterContentToMove.setContentOrder(tmpPos);
+
+        chapterContentRepository.save(chapterContentToMove);
+        chapterContentRepository.save(chapterContentToSwitch);
+
+        return true;
     }
 
     public Optional<ChapterContent> getChapterContentById(Long id) {
@@ -34,6 +73,10 @@ public class ChapterContentService {
     }
 
     public ChapterContent createChapterContent(ChapterContent chapterContent) {
+        List<ChapterContent> contents = getAllChapterContentsFromChapter(chapterContent.getChapterId());
+        if (!contents.isEmpty()) {
+            chapterContent.setContentOrder(contents.get(contents.size() - 1).getContentOrder() + 1);
+        }
         return chapterContentRepository.save(chapterContent);
     }
 
