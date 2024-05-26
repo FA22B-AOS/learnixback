@@ -197,4 +197,17 @@ public class WorkspaceController {
         }
     }
 
+    @PutMapping("/{workspaceId}/public")
+    public ResponseEntity<?> setPublicWorkspace(@PathVariable Long workspaceId, @RequestParam boolean publicWorkspace) {
+        String userId = keycloakService.getCurrentUserId();
+        try {
+            workspaceService.setPublicWorkspace(workspaceId, userId, publicWorkspace);
+            return ResponseEntity.ok("Workspace visibility updated successfully");
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (WorkspaceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
 }

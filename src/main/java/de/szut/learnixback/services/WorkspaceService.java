@@ -135,4 +135,13 @@ public class WorkspaceService {
         }
         return workspace.getModeratorIds();
     }
+
+    public void setPublicWorkspace(Long workspaceId, String userId, boolean publicWorkspace) throws AccessDeniedException, WorkspaceNotFoundException {
+        Workspace workspace = getWorkspaceById(workspaceId);
+        if (!workspace.getOwnerId().equals(userId)) {
+            throw new AccessDeniedException("You are not authorized to update this workspace.");
+        }
+        workspace.setPublicWorkspace(publicWorkspace);
+        workspaceRepository.save(workspace);
+    }
 }
