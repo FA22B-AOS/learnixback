@@ -16,8 +16,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain1(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/workspaces/**").permitAll()
-                        .requestMatchers("/lections/**").permitAll());
+//                        .requestMatchers("/**").permitAll());
+                        .anyRequest().permitAll());
 
         return http.build();
 

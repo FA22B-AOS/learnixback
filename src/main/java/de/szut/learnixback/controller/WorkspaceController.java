@@ -210,4 +210,17 @@ public class WorkspaceController {
         }
     }
 
+    @PutMapping("/{workspaceId}/invite-only")
+    public ResponseEntity<String> setInviteOnly(@PathVariable Long workspaceId, @RequestParam boolean inviteOnly) {
+        String userId = keycloakService.getCurrentUserId();
+        try {
+            workspaceService.setInviteOnly(workspaceId, inviteOnly, userId);
+            return ResponseEntity.ok("Invite-only status updated successfully");
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to update this workspace");
+        } catch (WorkspaceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
 }

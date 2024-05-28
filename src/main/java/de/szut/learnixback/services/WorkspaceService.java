@@ -30,7 +30,7 @@ public class WorkspaceService {
     }
 
     public Workspace getWorkspaceById(Long id){
-        return workspaceRepository.findById(id).orElseThrow(() -> new RuntimeException("Workspace not found"));
+        return workspaceRepository.findById(id).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
     }
 
     public List<Workspace> getAllWorkspaces(){
@@ -142,6 +142,18 @@ public class WorkspaceService {
             throw new AccessDeniedException("You are not authorized to update this workspace.");
         }
         workspace.setPublicWorkspace(publicWorkspace);
+        workspaceRepository.save(workspace);
+    }
+
+    public void setInviteOnly(Long workspaceId, boolean inviteOnly, String userId) throws AccessDeniedException, WorkspaceNotFoundException {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+
+        if (!workspace.getOwnerId().equals(userId)) {
+            throw new AccessDeniedException("You are not authorized to update this workspace");
+        }
+
+        workspace.setInviteOnly(inviteOnly);
         workspaceRepository.save(workspace);
     }
 }
