@@ -1,10 +1,10 @@
 package de.szut.learnixback.dto;
 
-import de.szut.learnixback.entities.Lection;
+import de.szut.learnixback.entities.WorkspaceLection;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,7 +14,7 @@ public class WorkspaceGetDto {
     private String ownerId;
     private boolean publicWorkspace;
     private boolean inviteOnly;
-    private List<String> memberIds;
-    private List<String> moderatorIds;
-    private List<Lection> lections;
+    private Set<String> memberIds;
+    private Set<String> moderatorIds;
+    private Set<WorkspaceLection> WorkspaceLections;
 }

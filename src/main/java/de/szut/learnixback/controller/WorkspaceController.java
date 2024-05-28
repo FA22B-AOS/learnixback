@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -175,7 +176,7 @@ public class WorkspaceController {
     public ResponseEntity<?> getMembersOfWorkspace(@PathVariable Long workspaceId) {
         String userId = keycloakService.getCurrentUserId();
         try {
-            List<String> members = workspaceService.getMembersOfWorkspace(workspaceId, userId);
+            Set<String> members = workspaceService.getMembersOfWorkspace(workspaceId, userId);
             return ResponseEntity.ok(members);
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to view members of this workspace");
@@ -188,7 +189,7 @@ public class WorkspaceController {
     public ResponseEntity<?> getModeratorsOfWorkspace(@PathVariable Long workspaceId) {
         String userId = keycloakService.getCurrentUserId();
         try {
-            List<String> moderators = workspaceService.getModeratorsOfWorkspace(workspaceId, userId);
+            Set<String> moderators = workspaceService.getModeratorsOfWorkspace(workspaceId, userId);
             return ResponseEntity.ok(moderators);
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to view moderators of this workspace");
@@ -220,6 +221,36 @@ public class WorkspaceController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to update this workspace");
         } catch (WorkspaceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{workspaceId}/lections/{lectionId}")
+    public ResponseEntity<?> addLectionToWorkspace(@PathVariable Long workspaceId, @PathVariable Long lectionId) {
+        String userId = keycloakService.getCurrentUserId();
+        try {
+            workspaceService.addLectionToWorkspace(workspaceId, lectionId, userId);
+            return ResponseEntity.ok("Lection added to workspace successfully.");
+        } catch (WorkspaceNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An error occurred while adding the lection to the workspace.");
+        }
+    }
+
+    @DeleteMapping("/{workspaceId}/lections/{lectionId}")
+    public ResponseEntity<?> removeLectionFromWorkspace(@PathVariable Long workspaceId, @PathVariable Long lectionId) {
+        String userId = keycloakService.getCurrentUserId();
+        try {
+            workspaceService.removeLectionFromWorkspace(workspaceId, lectionId, userId);
+            return ResponseEntity.ok("Lection removed from workspace successfully.");
+        } catch (WorkspaceNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An error occurred while removing the lection from the workspace.");
         }
     }
 

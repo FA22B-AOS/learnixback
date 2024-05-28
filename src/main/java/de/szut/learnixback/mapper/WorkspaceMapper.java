@@ -16,6 +16,7 @@ public class WorkspaceMapper {
         workspaceDto.setInviteOnly(workspace.isInviteOnly());
         workspaceDto.setMemberIds(workspace.getMemberIds());
         workspaceDto.setModeratorIds(workspace.getModeratorIds());
+        workspaceDto.setWorkspaceLections(workspace.getWorkspaceLections());
         return workspaceDto;
     }
 }
