@@ -2,6 +2,7 @@ package de.szut.learnixback.controller;
 
 import de.szut.learnixback.entities.ChapterContent;
 import de.szut.learnixback.services.ChapterContentService;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
