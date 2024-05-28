@@ -12,9 +12,9 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -52,9 +52,9 @@ public class CustomSecurityFilter implements Filter {
                         .build();
                 verifier.verify(decodedJWT);
 
-                SecurityContextHolder.getContext().setAuthentication(
-                        new UsernamePasswordAuthenticationToken(decodedJWT.getSubject(), "***",
-                                List.of(new SimpleGrantedAuthority("SIMPLE_AUTHORITY"))));
+//                SecurityContextHolder.getContext().setAuthentication(
+//                        new UsernamePasswordAuthenticationToken(decodedJWT.getSubject(), "***",
+//                                List.of(new SimpleGrantedAuthority("SIMPLE_AUTHORITY"))));
 
             }
 
