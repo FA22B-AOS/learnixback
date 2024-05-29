@@ -15,5 +15,4 @@ public class WorkspaceJoinRequestMapper {
         dto.setStatus(request.getStatus());
         return dto;
     }
-
 }
