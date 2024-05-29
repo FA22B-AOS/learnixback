@@ -1,7 +1,7 @@
 package de.szut.learnixback.controller;
 
 import de.szut.learnixback.customExceptionHandling.MemberAlreadyExistsException;
-import de.szut.learnixback.customExceptionHandling.WorkspaceNotFoundException;
+import de.szut.learnixback.customExceptionHandling.RessourceNotFoundException;
 import de.szut.learnixback.dto.WorkspaceGetDto;
 import de.szut.learnixback.dto.WorkspaceSetDto;
 import de.szut.learnixback.entities.Workspace;
@@ -87,7 +87,7 @@ public class WorkspaceController {
             } else {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to delete this workspace");
             }
-        } catch (WorkspaceNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -117,14 +117,15 @@ public class WorkspaceController {
             @PathVariable Long workspaceId,
             @RequestParam String memberId) {
 
-        String userId = keycloakService.getCurrentUserId();
+        //String userId = keycloakService.getCurrentUserId();
+        String userId = "055b03ce-09d6-4292-b9fe-16aa855104a2";
 
         try {
             workspaceService.addMemberToWorkspace(workspaceId, memberId, userId);
             return ResponseEntity.ok("Member added successfully");
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to add members to this workspace");
-        } catch (WorkspaceNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (MemberAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
@@ -141,7 +142,7 @@ public class WorkspaceController {
             return ResponseEntity.ok("Member removed successfully");
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to remove members from this workspace");
-        } catch (WorkspaceNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -154,7 +155,7 @@ public class WorkspaceController {
             return ResponseEntity.ok("Moderator added successfully");
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to add moderators to this workspace");
-        } catch (WorkspaceNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -167,7 +168,7 @@ public class WorkspaceController {
             return ResponseEntity.ok("Moderator removed successfully");
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to remove moderators from this workspace");
-        } catch (WorkspaceNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -180,7 +181,7 @@ public class WorkspaceController {
             return ResponseEntity.ok(members);
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to view members of this workspace");
-        } catch (WorkspaceNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -193,7 +194,7 @@ public class WorkspaceController {
             return ResponseEntity.ok(moderators);
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to view moderators of this workspace");
-        } catch (WorkspaceNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -206,7 +207,7 @@ public class WorkspaceController {
             return ResponseEntity.ok("Workspace visibility updated successfully");
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
-        } catch (WorkspaceNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -219,7 +220,7 @@ public class WorkspaceController {
             return ResponseEntity.ok("Invite-only status updated successfully");
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You are not authorized to update this workspace");
-        } catch (WorkspaceNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -230,7 +231,7 @@ public class WorkspaceController {
         try {
             workspaceService.addLectionToWorkspace(workspaceId, lectionId, userId);
             return ResponseEntity.ok("Lection added to workspace successfully.");
-        } catch (WorkspaceNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(403).body(e.getMessage());
@@ -245,7 +246,7 @@ public class WorkspaceController {
         try {
             workspaceService.removeLectionFromWorkspace(workspaceId, lectionId, userId);
             return ResponseEntity.ok("Lection removed from workspace successfully.");
-        } catch (WorkspaceNotFoundException e) {
+        } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         } catch (AccessDeniedException e) {
             return ResponseEntity.status(403).body(e.getMessage());

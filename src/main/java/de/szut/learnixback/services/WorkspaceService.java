@@ -1,7 +1,7 @@
 package de.szut.learnixback.services;
 
 import de.szut.learnixback.customExceptionHandling.MemberAlreadyExistsException;
-import de.szut.learnixback.customExceptionHandling.WorkspaceNotFoundException;
+import de.szut.learnixback.customExceptionHandling.RessourceNotFoundException;
 import de.szut.learnixback.dto.WorkspaceSetDto;
 import de.szut.learnixback.entities.Lection;
 import de.szut.learnixback.entities.Workspace;
@@ -35,7 +35,7 @@ public class WorkspaceService {
     }
 
     public Workspace getWorkspaceById(Long id){
-        return workspaceRepository.findById(id).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+        return workspaceRepository.findById(id).orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
     }
 
     public List<Workspace> getAllWorkspaces(){
@@ -50,7 +50,7 @@ public class WorkspaceService {
     }
 
     public boolean deleteWorkspace(Long workspaceId, String ownerId) {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found with ID: " + workspaceId));
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new RessourceNotFoundException("Workspace not found with ID: " + workspaceId));
         if (String.valueOf(workspace.getOwnerId()).equals(ownerId)) {
             workspaceRepository.delete(workspace);
             return true;
@@ -66,8 +66,8 @@ public class WorkspaceService {
     }
 
     // Administer workspace-members and moderators
-    public void addMemberToWorkspace(Long workspaceId, String memberId, String userId) throws AccessDeniedException, WorkspaceNotFoundException, MemberAlreadyExistsException {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+    public void addMemberToWorkspace(Long workspaceId, String memberId, String userId) throws AccessDeniedException, RessourceNotFoundException, MemberAlreadyExistsException {
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
 
         if (!workspace.getOwnerId().equals(userId) && !workspace.getModeratorIds().contains(userId)) {
             throw new AccessDeniedException("You are not authorized to add members to this workspace.");
@@ -82,7 +82,7 @@ public class WorkspaceService {
     }
 
     public void removeMemberFromWorkspace(Long workspaceId, String memberId, String userId) throws AccessDeniedException {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
         if (!workspace.getOwnerId().equals(userId) && !workspace.getModeratorIds().contains(userId)) {
             throw new AccessDeniedException("You are not authorized to remove members from this workspace.");
         }
@@ -94,7 +94,7 @@ public class WorkspaceService {
     }
 
     public void addModeratorToWorkspace(Long workspaceId, String memberId, String userId) throws AccessDeniedException {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
         if (!workspace.getOwnerId().equals(userId) && !workspace.getModeratorIds().contains(userId)) {
             throw new AccessDeniedException("You are not authorized to add moderators to this workspace.");
         }
@@ -105,7 +105,7 @@ public class WorkspaceService {
     }
 
     public void removeModeratorFromWorkspace(Long workspaceId, String memberId, String userId) throws AccessDeniedException {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
         if (!workspace.getOwnerId().equals(userId) && !workspace.getModeratorIds().contains(userId)) {
             throw new AccessDeniedException("You are not authorized to remove moderators from this workspace.");
         }
@@ -116,7 +116,7 @@ public class WorkspaceService {
     }
 
     public Set<String> getMembersOfWorkspace(Long workspaceId, String userId) throws AccessDeniedException {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
         if (!workspace.getOwnerId().equals(userId) && !workspace.getModeratorIds().contains(userId) && !workspace.getMemberIds().contains(userId)) {
             throw new AccessDeniedException("You are not authorized to view members of this workspace.");
         }
@@ -124,15 +124,15 @@ public class WorkspaceService {
     }
 
     public Set<String> getModeratorsOfWorkspace(Long workspaceId, String userId) throws AccessDeniedException {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
         if (!workspace.getOwnerId().equals(userId) && !workspace.getModeratorIds().contains(userId) && !workspace.getMemberIds().contains(userId)) {
             throw new AccessDeniedException("You are not authorized to view moderators of this workspace.");
         }
         return workspace.getModeratorIds();
     }
 
-    public void setPublicWorkspace(Long workspaceId, String userId, boolean publicWorkspace) throws AccessDeniedException, WorkspaceNotFoundException {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+    public void setPublicWorkspace(Long workspaceId, String userId, boolean publicWorkspace) throws AccessDeniedException, RessourceNotFoundException {
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
         if (!workspace.getOwnerId().equals(userId)) {
             throw new AccessDeniedException("You are not authorized to update this workspace.");
         }
@@ -140,9 +140,9 @@ public class WorkspaceService {
         workspaceRepository.save(workspace);
     }
 
-    public void setInviteOnly(Long workspaceId, boolean inviteOnly, String userId) throws AccessDeniedException, WorkspaceNotFoundException {
+    public void setInviteOnly(Long workspaceId, boolean inviteOnly, String userId) throws AccessDeniedException, RessourceNotFoundException {
         Workspace workspace = workspaceRepository.findById(workspaceId)
-                .orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+                .orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
 
         if (!workspace.getOwnerId().equals(userId)) {
             throw new AccessDeniedException("You are not authorized to update this workspace");
@@ -152,8 +152,8 @@ public class WorkspaceService {
         workspaceRepository.save(workspace);
     }
 
-    public void addLectionToWorkspace(Long workspaceId, Long lectionId, String userId) throws AccessDeniedException, WorkspaceNotFoundException {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+    public void addLectionToWorkspace(Long workspaceId, Long lectionId, String userId) throws AccessDeniedException, RessourceNotFoundException {
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
         Lection lection = lectionRepository.findById(lectionId).orElse(null);
         if (lection != null) {
             if (!workspace.getOwnerId().equals(userId) && !workspace.getModeratorIds().contains(userId)) {
@@ -168,8 +168,8 @@ public class WorkspaceService {
         }
     }
 
-    public void removeLectionFromWorkspace(Long workspaceId, Long lectionId, String userId) throws AccessDeniedException, WorkspaceNotFoundException {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("Workspace not found"));
+    public void removeLectionFromWorkspace(Long workspaceId, Long lectionId, String userId) throws AccessDeniedException, RessourceNotFoundException {
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
         if (!workspace.getOwnerId().equals(userId) && !workspace.getModeratorIds().contains(userId)) {
             throw new AccessDeniedException("You are not authorized to remove lections from this workspace.");
         }
