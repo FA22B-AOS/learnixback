@@ -9,6 +9,10 @@ import java.io.IOException;
 public class LearnixbackApplication {
 
 	public static void main(String[] args) {
+		if(args.length > 0){
+			if(args[0].equals("-manualdocker"))
+				DockerComposeRunner.setManual(true);
+		}
 		try {
 			DockerComposeRunner.startDockerCompose();
 			SpringApplication.run(LearnixbackApplication.class, args);
