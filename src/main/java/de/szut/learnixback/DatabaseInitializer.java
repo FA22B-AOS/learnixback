@@ -15,7 +15,7 @@ import java.util.UUID;
 @Component
 public class DatabaseInitializer implements CommandLineRunner {
 
-    private final LectionRepository lectionRepository;
+   private final LectionRepository lectionRepository;
     private final ChapterRepository chapterRepository;
     private final ChapterContentRepository chapterContentRepository;
     private final QuizRepository quizRepository;
