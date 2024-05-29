@@ -5,14 +5,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter @Setter
 @NoArgsConstructor
 public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long quizId;
+    private Long id;
+    private String question;
 
-    @Column(name = "chapter_Id")
-    private Long chapterId;
+    @ElementCollection
+    private List<String> options;
+
+    private int correctAnswer;
+    @Column(name = "lection_Id")
+    private Long lectionId;
 }
