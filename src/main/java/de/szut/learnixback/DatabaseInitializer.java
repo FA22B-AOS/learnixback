@@ -35,7 +35,6 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-/*
 
         this.lectionRepository.deleteAll();
         this.chapterContentRepository.deleteAll();
@@ -166,6 +165,6 @@ public class DatabaseInitializer implements CommandLineRunner {
         q10.setOptions(Arrays.asList("Object", "int", "long", "void"));
         q10.setCorrectAnswer(1);
         q10.setLectionId(javaID);
-        quizRepository.saveAll(Arrays.asList(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10));*/
+        quizRepository.saveAll(Arrays.asList(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10));
     }
 }
