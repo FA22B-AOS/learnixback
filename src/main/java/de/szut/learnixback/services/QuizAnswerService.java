@@ -17,15 +17,17 @@ public class QuizAnswerService {
     @Autowired
     private QuizRepository quizRepository;
 
-    public QuizAnswer saveAnswer(Long quizId, int selectedOption, String userId) {
+    public QuizAnswer saveAnswer(Long quizId, Integer selectedOption, String userId) {
         Quiz quiz = quizRepository.findById(quizId).orElse(null);
         if (quiz == null) {
             return null;
         }
+
+
         QuizAnswer answer = new QuizAnswer();
         answer.setQuizId(quizId);
         answer.setSelectedOption(selectedOption);
-        answer.setCorrect(selectedOption == quiz.getCorrectAnswer());
+        answer.setIsCorrect(selectedOption == quiz.getCorrectAnswer());
         answer.setUserGUID(userId);
         return quizAnswerRepository.save(answer);
     }
