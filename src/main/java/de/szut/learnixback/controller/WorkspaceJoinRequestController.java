@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/join-request")
+@RequestMapping("/workspaces/join-request")
 public class WorkspaceJoinRequestController {
 
     @Autowired
@@ -41,13 +41,36 @@ public class WorkspaceJoinRequestController {
         }
     }
 
-    @PutMapping("/{requestId}/respond")
-    public ResponseEntity<?> respondToJoinRequest(@PathVariable Long requestId, @RequestParam String status) {
+    @GetMapping
+    public ResponseEntity<List<WorkspaceJoinRequestGetDto>> getAllJoinRequests() {
+            List<WorkspaceJoinRequest> workspaceJoinRequests = workspaceJoinRequestService.getAllJoinRequests();
+            List<WorkspaceJoinRequestGetDto> dtoList;
+            dtoList = workspaceJoinRequests.stream()
+                    .map(this.workspaceJoinRequestMapper::mapToWorkspaceJoinRequestGetDto)
+                    .toList();
+            return ResponseEntity.ok(dtoList);
+    }
+
+    @PostMapping("/{requestId}/accept")
+    public ResponseEntity<?> acceptJoinRequest(@PathVariable Long requestId) {
         String userId = keycloakService.getCurrentUserId();
         try {
-            WorkspaceJoinRequest request = workspaceJoinRequestService.respondToJoinRequest(requestId, status, userId);
-            WorkspaceJoinRequestGetDto responseDto = workspaceJoinRequestMapper.mapToWorkspaceJoinRequestGetDto(request);
-            return ResponseEntity.ok(responseDto);
+            workspaceJoinRequestService.acceptJoinRequest(requestId, userId);
+
+            return ResponseEntity.ok().build();
+        } catch (RessourceNotFoundException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (AccessDeniedException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/{requestId}/deny")
+    public ResponseEntity<?> denyJoinRequest(@PathVariable Long requestId) {
+        String userId = keycloakService.getCurrentUserId();
+        try {
+            workspaceJoinRequestService.denyJoinRequest(requestId, userId);
+            return ResponseEntity.ok().build();
         } catch (RessourceNotFoundException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         } catch (AccessDeniedException e) {
@@ -62,8 +85,8 @@ public class WorkspaceJoinRequestController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/workspace/{workspaceId}")
-    public ResponseEntity<List<WorkspaceJoinRequestGetDto>> getJoinRequestsForWorkspace(@PathVariable Long workspaceId) throws AccessDeniedException, RessourceNotFoundException {
+    @GetMapping("/requestByWorkspaceId")
+    public ResponseEntity<List<WorkspaceJoinRequestGetDto>> getJoinRequestsForWorkspace(@RequestParam Long workspaceId) throws AccessDeniedException, RessourceNotFoundException {
         String userId = keycloakService.getCurrentUserId();
         List<WorkspaceJoinRequest> requests = workspaceJoinRequestService.getJoinRequestsForWorkspace(workspaceId, userId);
         List<WorkspaceJoinRequestGetDto> responseDtos = requests.stream()

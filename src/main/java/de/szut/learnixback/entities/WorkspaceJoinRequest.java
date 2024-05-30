@@ -16,7 +16,7 @@ public class WorkspaceJoinRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long requestId;
 
     @ManyToOne
     @JoinColumn(name = "workspace_id", nullable = false)
@@ -24,9 +24,6 @@ public class WorkspaceJoinRequest {
 
     @Column(name = "requester_user_id", nullable = false)
     private String requesterUserId;
-
-    @Column(name = "status", nullable = false)
-    private String status;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

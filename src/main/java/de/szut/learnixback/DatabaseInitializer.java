@@ -1,46 +1,48 @@
 package de.szut.learnixback;
 
-import de.szut.learnixback.entities.Chapter;
-import de.szut.learnixback.entities.ChapterContent;
-import de.szut.learnixback.entities.Lection;
-import de.szut.learnixback.entities.Quiz;
+import de.szut.learnixback.entities.*;
 import de.szut.learnixback.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+
+import java.util.*;
 
 @Component
 public class DatabaseInitializer implements CommandLineRunner {
 
-   private final LectionRepository lectionRepository;
+    private final LectionRepository lectionRepository;
     private final ChapterRepository chapterRepository;
     private final ChapterContentRepository chapterContentRepository;
     private final QuizRepository quizRepository;
     private final LectionProgressRepository lectionProgressRepository;
+    private final WorkspaceRepository workspaceRepository;
+    private final WorkspaceJoinRequestRepository workspaceJoinRequestRepository;
 
     public DatabaseInitializer(LectionRepository lectionRepository,
                                ChapterRepository chapterRepository,
                                ChapterContentRepository chapterContentRepository,
                                LectionProgressRepository lectionProgressRepository,
-                               QuizRepository quizRepository) {
+                               QuizRepository quizRepository,
+                               WorkspaceRepository workspaceRepository,
+                               WorkspaceJoinRequestRepository workspaceJoinRequestRepository) {
         this.lectionRepository = lectionRepository;
         this.chapterRepository = chapterRepository;
         this.chapterContentRepository = chapterContentRepository;
         this.lectionProgressRepository = lectionProgressRepository;
         this.quizRepository = quizRepository;
+        this.workspaceRepository = workspaceRepository;
+        this.workspaceJoinRequestRepository = workspaceJoinRequestRepository;
     }
 
     @Override
     public void run(String... args) {
-
         this.lectionRepository.deleteAll();
         this.chapterContentRepository.deleteAll();
         this.chapterRepository.deleteAll();
         this.lectionProgressRepository.deleteAll();
-        this.quizRepository.deleteAll();;
+        this.quizRepository.deleteAll();
+        this.workspaceRepository.deleteAll();
+        this.workspaceJoinRequestRepository.deleteAll();
 
         Long javaID = 0L;
 
@@ -50,43 +52,43 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         Lection javaLection = new Lection();
         javaLection.setTitle("Java for Beginners");
-        javaLection.setCreatorGuid( UUID.randomUUID().toString());
+        javaLection.setCreatorGuid(UUID.randomUUID().toString());
         javaLection.setTopicType("CS");
         javaLection.setDescription("In diesem Kurs werden dir die grundlegenden Kenntnisse der Java Programmiersprache beigebracht.");
         lections.add(lectionRepository.save(javaLection));
 
         Lection pythonLection = new Lection();
         pythonLection.setTitle("Python for Beginners");
-        pythonLection.setCreatorGuid( UUID.randomUUID().toString());
+        pythonLection.setCreatorGuid(UUID.randomUUID().toString());
         pythonLection.setTopicType("CS");
         pythonLection.setDescription("In diesem Kurs werden dir die grundlegenden Kenntnisse der Python Programmiersprache beigebracht.");
         lections.add(lectionRepository.save(pythonLection));
 
         Lection englishLection = new Lection();
         englishLection.setTitle("English 101");
-        englishLection.setCreatorGuid( UUID.randomUUID().toString());
+        englishLection.setCreatorGuid(UUID.randomUUID().toString());
         englishLection.setTopicType("Lang");
         englishLection.setDescription("Starte mit dem Kurs deinen Einstieg in die Englische Sprache.");
         lections.add(lectionRepository.save(englishLection));
 
         Lection analysisLection = new Lection();
         analysisLection.setTitle("Simple Analysis");
-        analysisLection.setCreatorGuid( UUID.randomUUID().toString());
+        analysisLection.setCreatorGuid(UUID.randomUUID().toString());
         analysisLection.setTopicType("Math");
         analysisLection.setDescription("Bereite dich auf deine Mathe Abiturprüfung mit dem Analysis Mathekurs vor.");
         lections.add(lectionRepository.save(analysisLection));
 
         Lection gimpLection = new Lection();
         gimpLection.setTitle("How to GIMP");
-        gimpLection.setCreatorGuid( UUID.randomUUID().toString());
+        gimpLection.setCreatorGuid(UUID.randomUUID().toString());
         gimpLection.setTopicType("Art");
         gimpLection.setDescription("Lerne das Grafiktool GIMP kennen um deine Kunstprojekte umzusetzen.");
         lections.add(lectionRepository.save(gimpLection));
 
-        for(Lection lection: lections) {
-            if (lection.getTitle().equals("Java for Beginners")){
+        for (Lection lection : lections) {
+            if (lection.getTitle().equals("Java for Beginners")) {
                 javaID = lection.getLectionId();
-                Chapter dataTypes = new Chapter("Datentypen",lection.getLectionId());
+                Chapter dataTypes = new Chapter("Datentypen", lection.getLectionId());
                 Chapter kontrollstrukturen = new Chapter("Kontrollstrukturen", lection.getLectionId());
                 Chapter schleifen = new Chapter("Schleifen", lection.getLectionId());
                 Chapter keywords = new Chapter("Keywords", lection.getLectionId());
@@ -103,68 +105,108 @@ public class DatabaseInitializer implements CommandLineRunner {
             }
         }
 
-        if(javaID > 0){
+        if (javaID > 0) {
+            Quiz q1 = new Quiz();
+            q1.setQuestion("What is the size of int in Java?");
+            q1.setOptions(Arrays.asList("8-bit", "16-bit", "32-bit", "64-bit"));
+            q1.setCorrectAnswer(2);
+            q1.setLectionId(javaID);
 
+            Quiz q2 = new Quiz();
+            q2.setQuestion("What is the default value of a boolean variable in Java?");
+            q2.setOptions(Arrays.asList("true", "false", "0", "1"));
+            q2.setCorrectAnswer(1);
+            q2.setLectionId(javaID);
+
+            Quiz q3 = new Quiz();
+            q3.setQuestion("Which method must be implemented by all threads?");
+            q3.setOptions(Arrays.asList("start()", "stop()", "run()", "main()"));
+            q3.setCorrectAnswer(2);
+            q3.setLectionId(javaID);
+
+            Quiz q4 = new Quiz();
+            q4.setQuestion("Which keyword is used to inherit a class in Java?");
+            q4.setOptions(Arrays.asList("this", "super", "extends", "implements"));
+            q4.setCorrectAnswer(2);
+            q4.setLectionId(javaID);
+
+            Quiz q5 = new Quiz();
+            q5.setQuestion("Which class is the parent class of all classes in Java?");
+            q5.setOptions(Arrays.asList("Object", "Class", "System", "None of the above"));
+            q5.setCorrectAnswer(0);
+            q5.setLectionId(javaID);
+
+            Quiz q6 = new Quiz();
+            q6.setQuestion("Which keyword is used to declare a constant in Java?");
+            q6.setOptions(Arrays.asList("const", "final", "static", "volatile"));
+            q6.setCorrectAnswer(1);
+            q6.setLectionId(javaID);
+
+            Quiz q7 = new Quiz();
+            q7.setQuestion("Which of the following is not an OOP concept in Java?");
+            q7.setOptions(Arrays.asList("Inheritance", "Encapsulation", "Polymorphism", "Compilation"));
+            q7.setCorrectAnswer(3);
+            q7.setLectionId(javaID);
+
+            Quiz q8 = new Quiz();
+            q8.setQuestion("Which exception is thrown when a method cannot find the referenced class?");
+            q8.setOptions(Arrays.asList("ClassNotFoundException", "IOException", "NoSuchMethodException", "RemoteException"));
+            q8.setCorrectAnswer(0);
+            q8.setLectionId(javaID);
+
+            Quiz q9 = new Quiz();
+            q9.setQuestion("Which package contains the Random class?");
+            q9.setOptions(Arrays.asList("java.util", "java.lang", "java.io", "java.net"));
+            q9.setCorrectAnswer(0);
+            q9.setLectionId(javaID);
+
+            Quiz q10 = new Quiz();
+            q10.setQuestion("What is the return type of the hashCode() method in the Object class?");
+            q10.setOptions(Arrays.asList("Object", "int", "long", "void"));
+            q10.setCorrectAnswer(1);
+            q10.setLectionId(javaID);
+            quizRepository.saveAll(Arrays.asList(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10));
         }
-        Quiz q1 = new Quiz();
-        q1.setQuestion("What is the size of int in Java?");
-        q1.setOptions(Arrays.asList("8-bit", "16-bit", "32-bit", "64-bit"));
-        q1.setCorrectAnswer(2);
-        q1.setLectionId(javaID);
 
-        Quiz q2 = new Quiz();
-        q2.setQuestion("What is the default value of a boolean variable in Java?");
-        q2.setOptions(Arrays.asList("true", "false", "0", "1"));
-        q2.setCorrectAnswer(1);
-        q2.setLectionId(javaID);
+        // Initialize Workspaces
+        Workspace workspace1 = new Workspace();
+        workspace1.setTitle("Java Enthusiasts");
+//        workspace1.setDescription("A workspace for Java learners and experts.");
+        workspace1.setMemberIds(new HashSet<>(Arrays.asList(UUID.randomUUID().toString(), UUID.randomUUID().toString())));
+        workspace1.setOwnerId(UUID.randomUUID().toString());
+        workspaceRepository.save(workspace1);
 
-        Quiz q3 = new Quiz();
-        q3.setQuestion("Which method must be implemented by all threads?");
-        q3.setOptions(Arrays.asList("start()", "stop()", "run()", "main()"));
-        q3.setCorrectAnswer(2);
-        q3.setLectionId(javaID);
+        Workspace workspace2 = new Workspace();
+        workspace2.setTitle("Python Developers");
+//        workspace2.setDescription("A workspace for Python developers.");
+        workspace2.setMemberIds(new HashSet<>(Arrays.asList(UUID.randomUUID().toString(), UUID.randomUUID().toString())));
+        workspace2.setOwnerId(UUID.randomUUID().toString());
+        workspaceRepository.save(workspace2);
 
-        Quiz q4 = new Quiz();
-        q4.setQuestion("Which keyword is used to inherit a class in Java?");
-        q4.setOptions(Arrays.asList("this", "super", "extends", "implements"));
-        q4.setCorrectAnswer(2);
-        q4.setLectionId(javaID);
+        Workspace workspace3 = new Workspace();
+        workspace3.setTitle("Art and Design");
+//        workspace3.setDescription("A workspace for artists and designers using GIMP.");
+        workspace3.setMemberIds(new HashSet<>(Arrays.asList(UUID.randomUUID().toString(), UUID.randomUUID().toString(), "055b03ce-09d6-4292-b9fe-16aa855104a2")));
+        workspace3.setOwnerId("055b03ce-09d6-4292-b9fe-16aa855104a2");
+        workspaceRepository.save(workspace3);
 
-        Quiz q5 = new Quiz();
-        q5.setQuestion("Which class is the parent class of all classes in Java?");
-        q5.setOptions(Arrays.asList("Object", "Class", "System", "None of the above"));
-        q5.setCorrectAnswer(0);
-        q5.setLectionId(javaID);
-
-        Quiz q6 = new Quiz();
-        q6.setQuestion("Which keyword is used to declare a constant in Java?");
-        q6.setOptions(Arrays.asList("const", "final", "static", "volatile"));
-        q6.setCorrectAnswer(1);
-        q6.setLectionId(javaID);
-
-        Quiz q7 = new Quiz();
-        q7.setQuestion("Which of the following is not an OOP concept in Java?");
-        q7.setOptions(Arrays.asList("Inheritance", "Encapsulation", "Polymorphism", "Compilation"));
-        q7.setCorrectAnswer(3);
-        q7.setLectionId(javaID);
-
-        Quiz q8 = new Quiz();
-        q8.setQuestion("Which exception is thrown when a method cannot find the referenced class?");
-        q8.setOptions(Arrays.asList("ClassNotFoundException", "IOException", "NoSuchMethodException", "RemoteException"));
-        q8.setCorrectAnswer(0);
-        q8.setLectionId(javaID);
-
-        Quiz q9 = new Quiz();
-        q9.setQuestion("Which package contains the Random class?");
-        q9.setOptions(Arrays.asList("java.util", "java.lang", "java.io", "java.net"));
-        q9.setCorrectAnswer(0);
-        q9.setLectionId(javaID);
-
-        Quiz q10 = new Quiz();
-        q10.setQuestion("What is the return type of the hashCode() method in the Object class?");
-        q10.setOptions(Arrays.asList("Object", "int", "long", "void"));
-        q10.setCorrectAnswer(1);
-        q10.setLectionId(javaID);
-        quizRepository.saveAll(Arrays.asList(q1, q2, q3, q4, q5, q6, q7, q8, q9, q10));
+        // Initialize Workspace Join Requests
+//        WorkspaceJoinRequest joinRequest1 = new WorkspaceJoinRequest();
+//        joinRequest1.setWorkspace(workspace1);
+//        joinRequest1.setRequesterUserId(UUID.randomUUID().toString());
+//        joinRequest1.setStatus("Pending");
+//        workspaceJoinRequestRepository.save(joinRequest1);
+//
+//        WorkspaceJoinRequest joinRequest2 = new WorkspaceJoinRequest();
+//        joinRequest2.setWorkspace(workspace2);
+//        joinRequest2.setRequesterUserId(UUID.randomUUID().toString());
+//        joinRequest2.setStatus("Approved");
+//        workspaceJoinRequestRepository.save(joinRequest2);
+//
+//        WorkspaceJoinRequest joinRequest3 = new WorkspaceJoinRequest();
+//        joinRequest3.setWorkspace(workspace3);
+//        joinRequest3.setRequesterUserId(UUID.randomUUID().toString());
+//        joinRequest3.setStatus("Rejected");
+//        workspaceJoinRequestRepository.save(joinRequest3);
     }
 }

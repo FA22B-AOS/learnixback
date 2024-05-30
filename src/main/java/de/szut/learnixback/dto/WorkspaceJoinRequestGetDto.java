@@ -9,10 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class WorkspaceJoinRequestGetDto {
-    private Long id;
+    private Long requestId;
     private Workspace workspace;
     private String requesterUserId;
-    private String status;
     private LocalDateTime createdAt;
     private LocalDateTime editedAt;
 }

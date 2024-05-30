@@ -55,6 +55,9 @@ public class Workspace {
     @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<WorkspaceLection> workspaceLections = new HashSet<>();
 
+//    @OneToMany(mappedBy = "requestId", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<WorkspaceJoinRequest> joinRequests;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

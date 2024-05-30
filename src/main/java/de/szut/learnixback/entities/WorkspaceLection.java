@@ -17,7 +17,7 @@ public class WorkspaceLection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long workspaceLectionId;
 
     @ManyToOne
     @JoinColumn(name = "workspace_id")

@@ -9,10 +9,9 @@ public class WorkspaceJoinRequestMapper {
 
     public WorkspaceJoinRequestGetDto mapToWorkspaceJoinRequestGetDto(WorkspaceJoinRequest request) {
         WorkspaceJoinRequestGetDto dto = new WorkspaceJoinRequestGetDto();
-        dto.setId(request.getId());
+        dto.setRequestId(request.getRequestId());
         dto.setWorkspace(request.getWorkspace());
         dto.setRequesterUserId(request.getRequesterUserId());
-        dto.setStatus(request.getStatus());
         return dto;
     }
 }

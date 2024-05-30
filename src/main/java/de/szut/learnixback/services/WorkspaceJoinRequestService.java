@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,18 +21,40 @@ public class WorkspaceJoinRequestService {
     private final WorkspaceRepository workspaceRepository;
 
     public WorkspaceJoinRequest createJoinRequest(WorkspaceJoinRequestSetDto dto) throws RessourceNotFoundException {
-        Workspace workspace = workspaceRepository.findById(dto.getWorkspace().getWorkspaceId())
+        Workspace workspace = workspaceRepository.findById(dto.getWorkspaceId())
                 .orElseThrow(() -> new RessourceNotFoundException("Workspace not found"));
 
         WorkspaceJoinRequest request = new WorkspaceJoinRequest();
         request.setWorkspace(workspace);
         request.setRequesterUserId(dto.getRequesterUserId());
-        request.setStatus("PENDING");
 
         return workspaceJoinRequestRepository.save(request);
     }
 
-    public WorkspaceJoinRequest respondToJoinRequest(Long requestId, String status, String userId) throws AccessDeniedException, RessourceNotFoundException {
+    public List<WorkspaceJoinRequest> getAllJoinRequests() {
+        return workspaceJoinRequestRepository.findAll();
+    }
+
+    public void acceptJoinRequest(Long requestId, String userId) throws AccessDeniedException, RessourceNotFoundException {
+        WorkspaceJoinRequest request = workspaceJoinRequestRepository.findById(requestId)
+                .orElseThrow(() -> new RessourceNotFoundException("Join request not found"));
+
+        Optional<Workspace> workspaceOptional = workspaceRepository.findById(request.getWorkspace().getWorkspaceId());
+        if (workspaceOptional.isEmpty()){
+            throw new RessourceNotFoundException("Workspace not found");
+        }
+        Workspace workspace = workspaceOptional.get();
+        if (!workspace.getOwnerId().equals(userId) && !workspace.getModeratorIds().contains(userId)) {
+            throw new AccessDeniedException("You are not authorized to respond to this join request.");
+        }
+
+        workspace.getMemberIds().add(request.getRequesterUserId());
+
+        workspaceRepository.save(workspace);
+        workspaceJoinRequestRepository.deleteById(requestId);
+    }
+
+    public void denyJoinRequest(Long requestId, String userId) throws AccessDeniedException, RessourceNotFoundException {
         WorkspaceJoinRequest request = workspaceJoinRequestRepository.findById(requestId)
                 .orElseThrow(() -> new RessourceNotFoundException("Join request not found"));
 
@@ -40,8 +63,7 @@ public class WorkspaceJoinRequestService {
             throw new AccessDeniedException("You are not authorized to respond to this join request.");
         }
 
-        request.setStatus(status);
-        return workspaceJoinRequestRepository.save(request);
+        workspaceJoinRequestRepository.deleteById(requestId);
     }
 
     public void deleteJoinRequest(Long requestId, String userId) throws AccessDeniedException, RessourceNotFoundException {
