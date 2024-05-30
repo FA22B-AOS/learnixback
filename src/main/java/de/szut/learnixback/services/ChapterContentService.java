@@ -1,9 +1,7 @@
 package de.szut.learnixback.services;
 
-import de.szut.learnixback.entities.Chapter;
 import de.szut.learnixback.entities.ChapterContent;
 import de.szut.learnixback.repositories.ChapterContentRepository;
-import org.apache.logging.log4j.util.PropertySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
