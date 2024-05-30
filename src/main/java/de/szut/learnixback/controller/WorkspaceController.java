@@ -33,6 +33,8 @@ public class WorkspaceController {
 
     @PostMapping
     public ResponseEntity<?> createWorkspace(@RequestBody WorkspaceSetDto workspaceSetDto) {
+        String userId = keycloakService.getCurrentUserId();
+        workspaceSetDto.setOwnerId(userId);
         try {
             Workspace workspace = this.workspaceService.createWorkspace(workspaceSetDto);
             WorkspaceGetDto workspaceDto = this.workspaceMapper.mapWorkspaceToDto(workspace);
