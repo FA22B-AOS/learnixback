@@ -14,8 +14,8 @@ public class QuizAnswer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int selectedOption;
-    private boolean isCorrect;
+    private Integer selectedOption;
+    private Boolean isCorrect;
 
     @Column(name = "quiz_id")
     private Long quizId;

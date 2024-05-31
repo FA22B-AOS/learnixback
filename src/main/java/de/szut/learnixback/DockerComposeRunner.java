@@ -1,5 +1,7 @@
 package de.szut.learnixback;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +13,13 @@ import java.nio.file.Paths;
 @Component
 public class DockerComposeRunner implements DisposableBean {
 
+    @Getter @Setter
+    private static boolean manual = false;
+
     public static void startDockerCompose() throws IOException, InterruptedException {
+        if(manual)
+            return;
+
         String osName = System.getProperty("os.name").toLowerCase();
         System.out.println("Betriebssystem: " + osName);
 
@@ -62,6 +70,7 @@ public class DockerComposeRunner implements DisposableBean {
 
     @Override
     public void destroy() throws Exception {
-        stopDockerCompose();
+        if(!manual)
+            stopDockerCompose();
     }
 }

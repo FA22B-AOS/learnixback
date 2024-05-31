@@ -1,5 +1,6 @@
 package de.szut.learnixback.controller;
 
+import de.szut.learnixback.dto.QuizAnswerDTO;
 import de.szut.learnixback.entities.QuizAnswer;
 import de.szut.learnixback.services.QuizAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/answers")
+@RequestMapping("/answers")
 public class QuizAnswerController {
     @Autowired
     private QuizAnswerService quizAnswerService;
 
     @PostMapping
-    public ResponseEntity<QuizAnswer> submitAnswer(@RequestParam Long quizId, @RequestParam int selectedOption, @RequestParam String userId) {
-        QuizAnswer savedAnswer = quizAnswerService.saveAnswer(quizId, selectedOption, userId);
+    public ResponseEntity<QuizAnswer> submitAnswer(@RequestBody QuizAnswerDTO dto) {
+        QuizAnswer savedAnswer = quizAnswerService.saveAnswer(dto.getQuizId(), dto.getSelectedOption(), dto.getUserGUID());
         return new ResponseEntity<>(savedAnswer, HttpStatus.CREATED);
     }
 
