@@ -186,7 +186,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         Workspace workspace3 = new Workspace();
         workspace3.setTitle("Art and Design");
 //        workspace3.setDescription("A workspace for artists and designers using GIMP.");
-        workspace3.setMemberIds(new HashSet<>(Arrays.asList(UUID.randomUUID().toString(), UUID.randomUUID().toString(), "055b03ce-09d6-4292-b9fe-16aa855104a2")));
+        workspace3.setMemberIds(new HashSet<>(Arrays.asList(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString())));
         workspace3.setOwnerId("055b03ce-09d6-4292-b9fe-16aa855104a2");
         workspaceRepository.save(workspace3);
 
